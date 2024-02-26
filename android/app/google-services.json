@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "231460986117",
+    "project_id": "furyu-hackathon-hiyokogumi",
+    "storage_bucket": "furyu-hackathon-hiyokogumi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:231460986117:android:3356304bc1f12874296b6c",
+        "android_client_info": {
+          "package_name": "com.example.furyu_hackathon_2024_hiyokogumi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVeDA-F_rkBidu2kt0OWzFcdtXHivskuQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
