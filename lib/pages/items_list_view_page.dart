@@ -58,8 +58,8 @@ class _ItemsListViewPageState extends State<ItemsListViewPage> {
   Widget _buildOneItem(Item item) {
     double screenWidth = MediaQuery.of(context).size.width;
     DateTime dateTime = item.createdAt.toDate();
-    String formattedDate = '${dateTime.year}年${dateTime.month}月${dateTime.day}日';
-
+    String formattedDate =
+        '${dateTime.year}年${dateTime.month}月${dateTime.day}日';
 
     return GestureDetector(
       onTap: () {
@@ -76,17 +76,25 @@ class _ItemsListViewPageState extends State<ItemsListViewPage> {
       child: Column(
         children: [
           Container(
-            width: screenWidth/3,
-            height: screenWidth/3 - 40,
+            width: screenWidth / 3,
+            height: screenWidth / 3 - 40,
             padding: const EdgeInsets.all(1.0),
-            child: Image.network(item.imageUrl,
-            fit: BoxFit.cover,),
+            child: Image.network(
+              item.imageUrl,
+              fit: BoxFit.cover,
+            ),
           ),
           Container(
-            child: Text(item.title, style: TextStyle(fontSize: 10),),
+            child: Text(
+              item.title,
+              style: TextStyle(fontSize: 10),
+            ),
           ),
           Container(
-            child: Text(formattedDate, style: TextStyle(fontSize: 10),),
+            child: Text(
+              formattedDate,
+              style: TextStyle(fontSize: 10),
+            ),
           ),
         ],
       ),
