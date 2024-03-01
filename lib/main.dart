@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:furyu_hackathon_2024_hiyokogumi/pages/LoginPage.dart';
 
 import 'firebase_options.dart';
@@ -19,6 +20,11 @@ class MyApp extends StatelessWidget {
     return const CupertinoApp(
       title: 'Flutter Demo',
       home: LoginPage(),
+      localizationsDelegates: [
+        DefaultMaterialLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
+        DefaultWidgetsLocalizations.delegate,
+      ],
     );
   }
 }
