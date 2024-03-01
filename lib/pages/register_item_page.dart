@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ulid/ulid.dart';
 
 /// アイデア登録ページ
 class RegisterItemPage extends StatefulWidget {
@@ -15,6 +17,8 @@ class RegisterItemPage extends StatefulWidget {
 class _RegisterItemPageState extends State<RegisterItemPage> {
   final _formKey = GlobalKey<FormState>();
   final _imagePicker = ImagePicker();
+  final _ideaNameController = TextEditingController();
+  final _ideaDescriptionController = TextEditingController();
   String _uploadedImageUrl = '';
 
   /// 端末のカメラから画像を選択する
@@ -41,6 +45,20 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
     }
   }
 
+  /// Firestoreにアイデアを登録する
+  Future<void> _registerItemToDB() async {
+    debugPrint('Sending message to Firestore');
+    var itemId = Ulid().toString(); // アイテムに一意な値を生成
+    await FirebaseFirestore.instance.collection('idea_items').add({
+      'id': itemId,
+      'author': 'TODO_firebase_userId', // TODO: ここはログインユーザーのIDにする
+      'title': _ideaNameController.text,
+      'description': _ideaDescriptionController.text,
+      'imageUrl': _uploadedImageUrl,
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+  }
+
   /// 登録ページのボディを生成する
   Widget _buildBody() {
     return Center(
@@ -51,7 +69,7 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
           _buildForm(),
           CupertinoButton(
             child: const Text('投稿する'),
-            onPressed: () {
+            onPressed: () async {
               // バリデーションチェック
               if (!_formKey.currentState!.validate()) {
                 return;
@@ -60,7 +78,7 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
                 // 画像が選択されていない場合はエラーを表示
                 return;
               }
-              // TODO: 投稿処理を実装する
+              await _registerItemToDB();
               // 投稿処理が成功したら、一覧画面に戻る
               Navigator.pop(context);
             },
@@ -97,6 +115,7 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
           autovalidateMode: AutovalidateMode.always,
           child: CupertinoFormSection.insetGrouped(children: [
             CupertinoTextFormFieldRow(
+              controller: _ideaNameController,
               placeholder: 'アイデア名',
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -109,6 +128,7 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
               },
             ),
             CupertinoTextFormFieldRow(
+              controller: _ideaDescriptionController,
               placeholder:
                   '概要（400文字以内）\n\n\n\n\n\n\n', // placeholderの上寄せが指定できないので8行分の高さを確保する力技
               minLines: 8,
