@@ -23,13 +23,14 @@ class _MyHomePageState extends State<MyHomePage> {
     // 固定でチャットページを追加 TODO 動的にIDを指定してチャットページを追加する
     ChatPage(
         item: Item(
-            id: "",
-            title: "",
-            description: "",
-            imageUrl: "",
-            author: "",
+            id: "YqtxNyFDofieaj7HnyiI",
+            title: "kitajimaTest",
+            description: "kitajimaTest",
+            imageUrl:
+                "https://firebasestorage.googleapis.com/v0/b/furyu-hackathon-hiyokogumi.appspot.com/o/images%2FUMY2qtaLsHXMoiFu2HUk7ispz3E3%2F2024-03-02%2004:06:26.689629.png?alt=media&token=9a440458-b87f-414f-a510-dd814e008623",
+            author: "UMY2qtaLsHXMoiFu2HUk7ispz3E3",
             createdAt: Timestamp.now()),
-        candidateId: ""),
+        candidateId: "hogehoge"),
   ];
 
   @override
@@ -53,6 +54,10 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.heart),
             label: 'いいね一覧',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.chat_bubble),
+            label: 'チャット',
           ),
         ],
         currentIndex: _currentIndex,

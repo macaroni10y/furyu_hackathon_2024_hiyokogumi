@@ -30,6 +30,7 @@ class _ChatPageState extends State<ChatPage> {
         .collection("candidates")
         .doc(widget.candidateId)
         .collection("messages")
+        .orderBy("timestamp")
         .snapshots();
   }
 
@@ -49,13 +50,10 @@ class _ChatPageState extends State<ChatPage> {
     _messageController.clear();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
-        middle: Text('Chat Page'),
-      ),
+  Center _buildBody() {
+    return Center(
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
@@ -70,29 +68,76 @@ class _ChatPageState extends State<ChatPage> {
                 print("received data: ${snapshot.data!.docs.length}");
                 return ListView(
                   children: snapshot.data!.docs.map((doc) {
-                    var data = doc.data();
-                    return Text("data");
+                    ChatMessage chatMessage = ChatMessage(
+                      message: doc["message"],
+                      sender: doc["sender"],
+                      timestamp: doc["timestamp"],
+                    );
+                    return _buildMessageText(chatMessage);
                   }).toList(),
                 );
               },
             ),
           ),
-          Row(
-            children: [
-              Expanded(
-                child: CupertinoTextField(
-                  controller: _messageController,
-                  placeholder: "Message",
-                ),
-              ),
-              CupertinoButton(
-                child: const Text("Send"),
-                onPressed: _sendMessage,
-              ),
-            ],
+          SafeArea(
+            child: _messageBar(),
           ),
         ],
       ),
     );
   }
+
+  /// 1つのメッセージ領域を作る
+  Widget _buildMessageText(ChatMessage chatMessage) {
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(chatMessage.message),
+      decoration: BoxDecoration(
+        color: chatMessage.sender == FirebaseAuth.instance.currentUser?.uid
+            ? CupertinoColors.systemBlue
+            : CupertinoColors.inactiveGray,
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      height: 50,
+      margin: const EdgeInsets.all(8.0),
+      alignment: chatMessage.sender == FirebaseAuth.instance.currentUser?.uid
+          ? Alignment.centerRight
+          : Alignment.centerLeft,
+    );
+  }
+
+  Widget _messageBar() {
+    return Row(
+      children: [
+        Expanded(
+          child: CupertinoTextField(
+            controller: _messageController,
+            placeholder: "Message",
+          ),
+        ),
+        CupertinoButton(
+          child: const Text("Send"),
+          onPressed: _sendMessage,
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoPageScaffold(
+      navigationBar: const CupertinoNavigationBar(
+        middle: Text('Chat Page'),
+      ),
+      child: _buildBody(),
+    );
+  }
+}
+
+class ChatMessage {
+  ChatMessage(
+      {required this.message, required this.sender, required this.timestamp});
+  final String message;
+  final String sender;
+  final Timestamp timestamp;
 }
