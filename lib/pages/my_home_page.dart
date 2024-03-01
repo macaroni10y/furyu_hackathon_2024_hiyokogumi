@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:furyu_hackathon_2024_hiyokogumi/pages/fuga.dart';
 import 'package:furyu_hackathon_2024_hiyokogumi/pages/hoge.dart';
+import 'package:furyu_hackathon_2024_hiyokogumi/pages/items_list_view_page.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -15,8 +16,9 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _pages = <Widget>[
     const Hoge(),
     const Fuga(),
-    const Hoge(),
-    const Fuga(),
+    const ItemsListViewPage(itemsListPageKind: ItemsListPageKind.allItems),
+    const ItemsListViewPage(itemsListPageKind: ItemsListPageKind.myItems),
+    const ItemsListViewPage(itemsListPageKind: ItemsListPageKind.likedItems),
   ];
 
   @override
@@ -38,12 +40,16 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'Fuga',
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.add),
-            label: 'Hoge2',
+            icon: Icon(CupertinoIcons.home),
+            label: '全てのアイデア',
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.alarm),
-            label: 'Fuga2',
+            icon: Icon(CupertinoIcons.person),
+            label: '自分のアイデア',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.heart),
+            label: 'いいね一覧',
           ),
         ],
         currentIndex: _currentIndex,
