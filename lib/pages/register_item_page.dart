@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ulid/ulid.dart';
 
 /// アイデア登録ページ
 class RegisterItemPage extends StatefulWidget {
@@ -53,7 +54,9 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
   /// Firestoreにアイデアを登録する
   Future<void> _registerItemToDB() async {
     debugPrint('Sending message to Firestore');
+    var itemId = Ulid().toString(); // アイテムに一意な値を生成
     await FirebaseFirestore.instance.collection('idea_items').add({
+      'id': itemId,
       'author': _userId,
       'title': _ideaNameController.text,
       'description': _ideaDescriptionController.text,
