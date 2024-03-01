@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import 'items_list_view_page.dart';
 
@@ -12,27 +13,34 @@ class MyItemDetailPage extends StatefulWidget {
 
 class _MyItemDetailPageState extends State<MyItemDetailPage> {
   /// 自分が出品した商品の詳細ページのbodyを生成する
-  Widget _buildBody() {
-    return Center(
+  Widget _buildBody(Item item) {
+    return SingleChildScrollView(
         child: Column(
       children: [
         Container(
+          width: 300,
+          height: 300,
           margin: const EdgeInsets.fromLTRB(16, 120, 16, 24),
-          child: Image.network('https://placehold.jp/300x300.png'),
+          child: Image.network(item.imageUrl),
         ),
         Container(
           margin: EdgeInsets.fromLTRB(16, 0, 16, 24),
-          child: Text(
-            "imageTitle",
-            style: TextStyle(
-              fontSize: 40,
+          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text(
+              item.title,
+              style: TextStyle(
+                fontSize: 30,
+              ),
             ),
-          ),
+            Icon(Icons.favorite, color: Colors.pink),
+            // いいねの数
+            Text('100'),
+          ]),
         ),
         Text(
-          "description",
+          item.description,
           style: TextStyle(
-            fontSize: 24,
+            fontSize: 20,
           ),
         ),
         Container(
@@ -66,9 +74,8 @@ class _MyItemDetailPageState extends State<MyItemDetailPage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-          middle: Text("widget.itemsListPageKind.title")),
-      child: _buildBody(),
+      navigationBar: CupertinoNavigationBar(middle: Text("詳細画面")),
+      child: _buildBody(widget.item),
     );
   }
 }

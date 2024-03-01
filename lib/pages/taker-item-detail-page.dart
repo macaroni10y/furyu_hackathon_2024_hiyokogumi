@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import 'chat_page.dart';
 import 'items_list_view_page.dart';
 
 class TakerItemDetailPage extends StatefulWidget {
-  const TakerItemDetailPage({super.key, required this.item});
+  TakerItemDetailPage({super.key, required this.item});
   final Item item;
 
   @override
@@ -13,14 +14,18 @@ class TakerItemDetailPage extends StatefulWidget {
 }
 
 class _TakerItemDetailPageState extends State<TakerItemDetailPage> {
+  bool favorite = false;
+
   /// 他人が出品した商品の詳細ページのbodyを生成する
-  Widget _buildBody() {
-    return Center(
+  Widget _buildBody(Item item) {
+    return SingleChildScrollView(
         child: Column(
       children: [
         Container(
-          margin: const EdgeInsets.fromLTRB(16, 120, 16, 24),
-          child: Image.network('https://placehold.jp/300x300.png'),
+          width: 300,
+          height: 300,
+          margin: const EdgeInsets.fromLTRB(16, 80, 16, 24),
+          child: Image.network(item.imageUrl, fit: BoxFit.contain),
         ),
         Container(
           margin: EdgeInsets.fromLTRB(16, 0, 16, 24),
@@ -39,19 +44,29 @@ class _TakerItemDetailPageState extends State<TakerItemDetailPage> {
                 ),
                 child: Text(
                   // TODO: font sizeを文字数に合わせて可変にしないと、改行が入ってレイアウト崩れる
-                  "imageTitle",
+                  item.title,
                   style: TextStyle(
-                    fontSize: 40,
+                    fontSize: 30,
                   ),
                 ),
               ),
               SizedBox(
                 width: 8,
               ),
-              SizedBox(
-                width: 16,
-                child: CupertinoButton(child: Text("♡"), onPressed: () => {}),
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    // いいね取り消し無効
+                    //favorite ? favorite = false : favorite = true;
+                    favorite = true;
+                  });
+                },
+                icon: Icon(Icons.favorite),
+                color: favorite ? Colors.pink : Colors.black12,
+                highlightColor: Colors.white,
               ),
+              // いいねの数
+              Text('100'),
               Spacer(
                 flex: 1,
               )
@@ -59,9 +74,9 @@ class _TakerItemDetailPageState extends State<TakerItemDetailPage> {
           ),
         ),
         Text(
-          "description",
+          item.description,
           style: TextStyle(
-            fontSize: 24,
+            fontSize: 20,
           ),
         ),
 
@@ -89,9 +104,8 @@ class _TakerItemDetailPageState extends State<TakerItemDetailPage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-          middle: Text("widget.itemsListPageKind.title")),
-      child: _buildBody(),
+      navigationBar: CupertinoNavigationBar(middle: Text("詳細画面")),
+      child: _buildBody(widget.item),
     );
   }
 }
