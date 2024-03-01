@@ -1,14 +1,20 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:furyu_hackathon_2024_hiyokogumi/pages/my_home_page.dart';
 
-class CreateNewAccount extends StatelessWidget {
-  CreateNewAccount({Key? key}) : super(key: key);
+class CreateNewAccount extends StatefulWidget {
+  const CreateNewAccount({super.key});
 
-  String? userEmail = '';
-  String? userPassword = '';
-  String? userName = '';
+  @override
+  State<CreateNewAccount> createState() => _CreateNewAccountState();
+}
+
+class _CreateNewAccountState extends State<CreateNewAccount> {
+  String userEmail = '';
+  String userPassword = '';
+  String userName = '';
+  String infoText = '';
 
   @override
   Widget build(BuildContext context) {
@@ -55,16 +61,43 @@ class CreateNewAccount extends StatelessWidget {
                   ),
                   CupertinoButton(
                     child: Text('アカウント登録'),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              MyHomePage(title: 'Flutter Demo Home Page'),
-                        ),
-                      );
+                    onPressed: () async {
+                      if (userPassword.length < 6) {
+                        setState(() {
+                          infoText = 'パスワードは6文字以上で設定してください';
+                        });
+                      } else if (!userPassword.isEmpty && !userEmail.isEmpty) {
+                        try {
+                          final FirebaseAuth auth = FirebaseAuth.instance;
+                          final UserCredential result =
+                              await auth.createUserWithEmailAndPassword(
+                                  email: userEmail, password: userPassword);
+
+                          final User user = result.user!;
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  MyHomePage(title: 'Flutter Demo Home Page'),
+                            ),
+                          );
+                        } catch (e) {
+                          setState(() {
+                            infoText = 'ユーザー登録時にエラーが発生しました';
+                          });
+                        }
+                      } else {
+                        setState(() {
+                          infoText = 'e-mailアドレスとパスワードの両方を入力してください';
+                        });
+                      }
                     },
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Text(infoText),
                 ],
               ),
             )));

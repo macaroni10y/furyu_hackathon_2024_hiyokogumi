@@ -1,9 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:furyu_hackathon_2024_hiyokogumi/pages/CreateNewAccount.dart';
 import 'package:furyu_hackathon_2024_hiyokogumi/pages/my_home_page.dart';
-import 'package:furyu_hackathon_2024_hiyokogumi/pages/hoge.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,8 +12,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String? userEmail = '';
-  String? userPassword = '';
+  String loginEmail = '';
+  String loginPassword = '';
+  String infoText = '';
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
                     placeholder: "Enter e-mail",
                     keyboardType: TextInputType.emailAddress,
                     onSubmitted: (String txt) {
-                      userEmail = txt;
+                      loginEmail = txt;
                     },
                   ),
                   const SizedBox(height: 20),
@@ -48,20 +48,44 @@ class _LoginPageState extends State<LoginPage> {
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: true,
                     onSubmitted: (String txt) {
-                      userPassword = txt;
+                      loginPassword = txt;
                     },
                   ),
                   const SizedBox(height: 20),
                   CupertinoButton(
                     child: Text('ログイン'),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              MyHomePage(title: 'Flutter Demo Home Page'),
-                        ),
-                      );
+                    onPressed: () async {
+                      if (loginPassword.length < 6) {
+                        setState(() {
+                          infoText = 'パスワードは6文字以上です';
+                        });
+                      } else if (!loginPassword.isEmpty &&
+                          !loginEmail.isEmpty) {
+                        try {
+                          final FirebaseAuth auth = FirebaseAuth.instance;
+                          final UserCredential result =
+                              await auth.signInWithEmailAndPassword(
+                                  email: loginEmail, password: loginPassword);
+
+                          final User user = result.user!;
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  MyHomePage(title: 'Flutter Demo Home Page'),
+                            ),
+                          );
+                        } catch (e) {
+                          setState(() {
+                            infoText = 'ログインエラーが発生しました';
+                          });
+                        }
+                      } else {
+                        setState(() {
+                          infoText = 'ログインエラーが発生しました';
+                        });
+                      }
                     },
                   ),
                   const SizedBox(height: 20),
@@ -76,6 +100,10 @@ class _LoginPageState extends State<LoginPage> {
                       );
                     },
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Text(infoText),
                 ],
               ),
             )));
