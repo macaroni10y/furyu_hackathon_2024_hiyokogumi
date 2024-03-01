@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:furyu_hackathon_2024_hiyokogumi/pages/edit_item_page.dart';
 
 import 'items_list_view_page.dart';
 
@@ -12,6 +14,14 @@ class MyItemDetailPage extends StatefulWidget {
 }
 
 class _MyItemDetailPageState extends State<MyItemDetailPage> {
+  // 出品を取り消す
+  void _deleteItem() {
+    FirebaseFirestore.instance
+        .collection('idea_items')
+        .doc(widget.item.id)
+        .delete();
+  }
+
   /// 自分が出品した商品の詳細ページのbodyを生成する
   Widget _buildBody(Item item) {
     return SingleChildScrollView(
@@ -51,14 +61,23 @@ class _MyItemDetailPageState extends State<MyItemDetailPage> {
                 flex: 1,
               ),
               CupertinoButton(
-                onPressed: () => {},
+                onPressed: () => {
+                  Navigator.of(context).push(
+                    CupertinoPageRoute(
+                        builder: (context) =>
+                            EditItemPage(editTarget: widget.item)),
+                  )
+                },
                 child: Text("編集する"),
               ),
               const Spacer(
                 flex: 2,
               ),
               CupertinoButton(
-                onPressed: () => {},
+                onPressed: () => {
+                  _deleteItem(),
+                  Navigator.popUntil(context, (route) => route.isFirst),
+                },
                 child: Text("出品をやめる"),
               ),
               const Spacer(
