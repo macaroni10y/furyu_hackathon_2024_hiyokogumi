@@ -38,6 +38,7 @@ class _ChatPageState extends State<ChatPage> {
 
   /// メッセージを送信する
   void _sendMessage() {
+    if (_messageController.text.isEmpty) return;
     FirebaseFirestore.instance
         .collection("idea_items")
         .doc(widget.item.id)
@@ -83,6 +84,7 @@ class _ChatPageState extends State<ChatPage> {
             ),
           ),
           SafeArea(
+            top: false,
             child: _messageBar(),
           ),
         ],
@@ -119,7 +121,7 @@ class _ChatPageState extends State<ChatPage> {
           ),
         ),
         CupertinoButton(
-          child: const Text("Send"),
+          child: const Text("送信"),
           onPressed: _sendMessage,
         ),
       ],
@@ -129,8 +131,8 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
-        middle: Text('Chat Page'),
+      navigationBar: CupertinoNavigationBar(
+        middle: Text('${widget.item.title} の取引画面'),
       ),
       child: _buildBody(),
     );

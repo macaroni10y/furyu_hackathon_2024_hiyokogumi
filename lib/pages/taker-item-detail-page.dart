@@ -65,7 +65,11 @@ class _TakerItemDetailPageState extends State<TakerItemDetailPage> {
         Container(
           margin: const EdgeInsets.fromLTRB(16, 32, 16, 32),
           child: CupertinoButton(
-            onPressed: () => {},
+            onPressed: () => {
+              // TODO itemが保持できていたらここで渡す
+              // Navigator.push(
+              //     context, CupertinoPageRoute(builder: (context) => ChatPage()))
+            },
             child: Text("やりとりする"),
           ),
         ),
