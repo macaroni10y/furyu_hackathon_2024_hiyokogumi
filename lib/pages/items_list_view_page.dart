@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:furyu_hackathon_2024_hiyokogumi/pages/my_item_detail_page.dart';
 import 'package:furyu_hackathon_2024_hiyokogumi/pages/register_item_page.dart';
 import 'package:furyu_hackathon_2024_hiyokogumi/pages/taker-item-detail-page.dart';
@@ -107,15 +108,22 @@ class _ItemsListViewPageState extends State<ItemsListViewPage> {
   /// 商品一覧ページのbodyを生成する
   Widget _buildBody() {
     return Center(
-        child: GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-      ),
-      itemBuilder: (BuildContext context, int index) {
-        return _buildOneItem(_items[index]);
-      },
-      itemCount: _items.length,
-    ));
+      child: RefreshIndicator(
+          onRefresh: () async {
+            setState(() {
+              _fetchItemsFromStore();
+            });
+          },
+          child: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+            ),
+            itemBuilder: (BuildContext context, int index) {
+              return _buildOneItem(_items[index]);
+            },
+            itemCount: _items.length,
+          )),
+    );
   }
 
   /// 商品一覧ページのナビゲーションバーを生成する
