@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 
 import 'items_list_view_page.dart';
 
+/// チャット画面
+/// 出品者と、商品をほしい側のユーザーとのチャット画面
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key, required this.item, required this.candidateId});
   final Item item;
@@ -45,7 +47,7 @@ class _ChatPageState extends State<ChatPage> {
         .add({
       "message": _messageController.text,
       "sender": FirebaseAuth.instance.currentUser?.uid ?? "",
-      "timestamp": FieldValue.serverTimestamp(),
+      "timestamp": Timestamp.now(),
     });
     _messageController.clear();
   }
@@ -68,6 +70,7 @@ class _ChatPageState extends State<ChatPage> {
                 print("received data: ${snapshot.data!.docs.length}");
                 return ListView(
                   children: snapshot.data!.docs.map((doc) {
+                    print(doc["timestamp"]);
                     ChatMessage chatMessage = ChatMessage(
                       message: doc["message"],
                       sender: doc["sender"],
