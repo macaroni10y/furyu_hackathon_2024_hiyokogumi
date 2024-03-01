@@ -101,6 +101,7 @@ class _CreateNewAccountState extends State<CreateNewAccount> {
                           );
                         } catch (e) {
                           setState(() {
+                            print(e);
                             infoText = 'ユーザー登録時にエラーが発生しました';
                           });
                         }

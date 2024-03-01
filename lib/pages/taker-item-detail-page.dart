@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,45 @@ class TakerItemDetailPage extends StatefulWidget {
 
 class _TakerItemDetailPageState extends State<TakerItemDetailPage> {
   bool favorite = false;
+  int _favoriteCount = 0;
+
+  void _fetchLikeCount() async {
+    var likes = await FirebaseFirestore.instance
+        .collection("idea_items")
+        .doc(widget.item.id)
+        .collection('likes')
+        .get();
+    _favoriteCount = likes.size;
+    likes.docs.any((doc) => doc.id == FirebaseAuth.instance.currentUser?.uid)
+        ? favorite = true
+        : favorite = false;
+    setState(() {});
+  }
+
+  void _like() {
+    if (favorite) {
+      FirebaseFirestore.instance
+          .collection("idea_items")
+          .doc(widget.item.id)
+          .collection('likes')
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .delete();
+    } else {
+      FirebaseFirestore.instance
+          .collection("idea_items")
+          .doc(widget.item.id)
+          .collection('likes')
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .set({});
+    }
+    _fetchLikeCount();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchLikeCount();
+  }
 
   /// 他人が出品した商品の詳細ページのbodyを生成する
   Widget _buildBody(Item item) {
@@ -57,7 +97,7 @@ class _TakerItemDetailPageState extends State<TakerItemDetailPage> {
                 onPressed: () {
                   setState(() {
                     // いいね取り消し無効
-                    //favorite ? favorite = false : favorite = true;
+                    _like();
                     favorite = true;
                   });
                 },
@@ -66,7 +106,7 @@ class _TakerItemDetailPageState extends State<TakerItemDetailPage> {
                 highlightColor: Colors.white,
               ),
               // いいねの数
-              Text('100'),
+              Text('$_favoriteCount'),
               Spacer(
                 flex: 1,
               )
