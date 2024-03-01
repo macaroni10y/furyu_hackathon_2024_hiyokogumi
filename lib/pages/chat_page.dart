@@ -17,10 +17,34 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController _messageController = TextEditingController();
+  String _authorNickName = "";
+  String _candidateNickName = "";
+
+  /// 出品者と、商品をほしい側のユーザーのニックネームを取得する
+  void _fetchNickName() async {
+    _authorNickName = await FirebaseFirestore.instance
+        .collection("user_info_list")
+        .doc(widget.item.author)
+        .get()
+        .then((value) {
+      var data = value.data();
+      return data?["name"];
+    });
+    _candidateNickName = await FirebaseFirestore.instance
+        .collection("user_info_list")
+        .doc(widget.candidateId)
+        .get()
+        .then((value) {
+      var data = value.data();
+      return data?["name"];
+    });
+    setState(() {});
+  }
 
   @override
   void initState() {
     super.initState();
+    _fetchNickName();
   }
 
   /// チャットのメッセージをstreamで取得する
@@ -71,7 +95,6 @@ class _ChatPageState extends State<ChatPage> {
                 print("received data: ${snapshot.data!.docs.length}");
                 return ListView(
                   children: snapshot.data!.docs.map((doc) {
-                    print(doc["timestamp"]);
                     ChatMessage chatMessage = ChatMessage(
                       message: doc["message"],
                       sender: doc["sender"],
@@ -132,7 +155,8 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: Text('${widget.item.title} の取引画面'),
+        middle: Text(
+            '${widget.item.title} の取引画面 出品者: $_authorNickName ほしい側: $_candidateNickName'),
       ),
       child: _buildBody(),
     );
