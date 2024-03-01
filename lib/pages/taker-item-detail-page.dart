@@ -12,55 +12,65 @@ class _TakerItemDetailPageState extends State<TakerItemDetailPage> {
   Widget _buildBody() {
     return Center(
         child: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.fromLTRB(16, 120, 16, 24),
-              child: Image.network('https://placehold.jp/300x300.png'),
-            ),
-            Container(
-              margin: EdgeInsets.fromLTRB(16, 0, 16, 24),
-              child: Row(
-                children: [
-                  Spacer(flex: 1,),
-                  // ここのSizedBoxはボタンの幅とボタンとの間隔分のサイズで間隔を入れている
-                  SizedBox(width: 24,),
-                  ConstrainedBox(
-                    constraints: BoxConstraints(maxWidth: 256,),
-                    child: Text(
-                      // TODO: font sizeを文字数に合わせて可変にしないと、改行が入ってレイアウト崩れる
-                      "imageTitle",
-                      style: TextStyle(
-                        fontSize: 40,
-                      ),
-                    ),
+      children: [
+        Container(
+          margin: const EdgeInsets.fromLTRB(16, 120, 16, 24),
+          child: Image.network('https://placehold.jp/300x300.png'),
+        ),
+        Container(
+          margin: EdgeInsets.fromLTRB(16, 0, 16, 24),
+          child: Row(
+            children: [
+              Spacer(
+                flex: 1,
+              ),
+              // ここのSizedBoxはボタンの幅とボタンとの間隔分のサイズで間隔を入れている
+              SizedBox(
+                width: 24,
+              ),
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: 256,
+                ),
+                child: Text(
+                  // TODO: font sizeを文字数に合わせて可変にしないと、改行が入ってレイアウト崩れる
+                  "imageTitle",
+                  style: TextStyle(
+                    fontSize: 40,
                   ),
-                  SizedBox(width: 8,),
-                  SizedBox(
-                    width: 16,
-                    child: CupertinoButton(child: Text("♡"), onPressed: () => {}),
-                  ),
-                  Spacer(flex: 1,)
-                ],
+                ),
               ),
-            ),
-            Text(
-              "description",
-              style: TextStyle(
-                fontSize: 24,
+              SizedBox(
+                width: 8,
               ),
-            ),
+              SizedBox(
+                width: 16,
+                child: CupertinoButton(child: Text("♡"), onPressed: () => {}),
+              ),
+              Spacer(
+                flex: 1,
+              )
+            ],
+          ),
+        ),
+        Text(
+          "description",
+          style: TextStyle(
+            fontSize: 24,
+          ),
+        ),
 
-            // TODO: タグを表示する部分を入れる
+        // TODO: タグを表示する部分を入れる
 
-            Container(
-              margin: const EdgeInsets.fromLTRB(16, 32, 16, 32),
-              child: CupertinoButton(
-                onPressed: () => {},
-                child: Text("やりとりする"),
-              ),
-            ),
-          ],
-        ));
+        Container(
+          margin: const EdgeInsets.fromLTRB(16, 32, 16, 32),
+          child: CupertinoButton(
+            onPressed: () => {},
+            child: Text("やりとりする"),
+          ),
+        ),
+      ],
+    ));
   }
 
   @override
