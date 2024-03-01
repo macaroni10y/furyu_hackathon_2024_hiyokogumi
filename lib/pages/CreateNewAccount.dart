@@ -47,7 +47,7 @@ class _CreateNewAccountState extends State<CreateNewAccount> {
                   CupertinoTextField(
                     placeholder: "Enter e-mail",
                     keyboardType: TextInputType.emailAddress,
-                    onSubmitted: (String txt) {
+                    onChanged: (String txt) {
                       userEmail = txt;
                     },
                   ),

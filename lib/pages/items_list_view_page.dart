@@ -72,8 +72,8 @@ class _ItemsListViewPageState extends State<ItemsListViewPage> {
           builder: (context) {
             // 自分の商品なら編集可能な詳細画面に遷移
             return _userId == item.author
-                ? const MyItemDetailPage()
-                : const TakerItemDetailPage();
+                ? MyItemDetailPage(item: item)
+                : TakerItemDetailPage(item: item);
           },
         ));
       },

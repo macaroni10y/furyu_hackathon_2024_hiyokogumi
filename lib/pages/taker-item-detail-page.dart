@@ -1,7 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'chat_page.dart';
+import 'items_list_view_page.dart';
+
 class TakerItemDetailPage extends StatefulWidget {
-  const TakerItemDetailPage({super.key});
+  const TakerItemDetailPage({super.key, required this.item});
+  final Item item;
 
   @override
   State<TakerItemDetailPage> createState() => _TakerItemDetailPageState();
@@ -66,9 +71,13 @@ class _TakerItemDetailPageState extends State<TakerItemDetailPage> {
           margin: const EdgeInsets.fromLTRB(16, 32, 16, 32),
           child: CupertinoButton(
             onPressed: () => {
-              // TODO itemが保持できていたらここで渡す
-              // Navigator.push(
-              //     context, CupertinoPageRoute(builder: (context) => ChatPage()))
+              Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                      builder: (context) => ChatPage(
+                            item: widget.item,
+                            candidateId: FirebaseAuth.instance.currentUser!.uid,
+                          )))
             },
             child: Text("やりとりする"),
           ),

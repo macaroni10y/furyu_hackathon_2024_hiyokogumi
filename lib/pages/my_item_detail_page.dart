@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 
+import 'items_list_view_page.dart';
+
 class MyItemDetailPage extends StatefulWidget {
-  const MyItemDetailPage({super.key});
+  const MyItemDetailPage({super.key, required this.item});
+  final Item item;
 
   @override
   State<MyItemDetailPage> createState() => _MyItemDetailPageState();
