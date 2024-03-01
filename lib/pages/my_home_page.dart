@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:furyu_hackathon_2024_hiyokogumi/pages/chat_page.dart';
 import 'package:furyu_hackathon_2024_hiyokogumi/pages/items_list_view_page.dart';
 
 /// 下タブを定義したベースとなるページ
@@ -18,6 +20,16 @@ class _MyHomePageState extends State<MyHomePage> {
     const ItemsListViewPage(itemsListPageKind: ItemsListPageKind.allItems),
     const ItemsListViewPage(itemsListPageKind: ItemsListPageKind.myItems),
     const ItemsListViewPage(itemsListPageKind: ItemsListPageKind.likedItems),
+    // 固定でチャットページを追加 TODO 動的にIDを指定してチャットページを追加する
+    ChatPage(
+        item: Item(
+            id: "",
+            title: "",
+            description: "",
+            imageUrl: "",
+            author: "",
+            createdAt: Timestamp.now()),
+        candidateId: ""),
   ];
 
   @override
