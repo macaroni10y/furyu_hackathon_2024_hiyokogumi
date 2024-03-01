@@ -61,12 +61,13 @@ class _MyItemDetailPageState extends State<MyItemDetailPage> {
                 flex: 1,
               ),
               CupertinoButton(
-                onPressed: () => {
-                  Navigator.of(context).push(
+                onPressed: () async {
+                  await Navigator.of(context).push(
                     CupertinoPageRoute(
                         builder: (context) =>
                             EditItemPage(editTarget: widget.item)),
-                  )
+                  );
+                  setState(() {});
                 },
                 child: Text("編集する"),
               ),
