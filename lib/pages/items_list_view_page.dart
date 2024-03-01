@@ -66,9 +66,9 @@ class _ItemsListViewPageState extends State<ItemsListViewPage> {
         '${dateTime.year}年${dateTime.month}月${dateTime.day}日';
 
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         // 商品詳細画面に遷移
-        Navigator.push(context, CupertinoPageRoute(
+        await Navigator.push(context, CupertinoPageRoute(
           builder: (context) {
             // 自分の商品なら編集可能な詳細画面に遷移
             return _userId == item.author
@@ -76,6 +76,10 @@ class _ItemsListViewPageState extends State<ItemsListViewPage> {
                 : TakerItemDetailPage(item: item);
           },
         ));
+        // 修正後にリフレッシュ
+        setState(() {
+          _fetchItemsFromStore();
+        });
       },
       child: Column(
         children: [
@@ -132,13 +136,17 @@ class _ItemsListViewPageState extends State<ItemsListViewPage> {
         middle: Text(widget.itemsListPageKind.title),
         trailing: CupertinoButton(
           child: const Icon(CupertinoIcons.add),
-          onPressed: () {
+          onPressed: () async {
             // 新規投稿画面に遷移
-            Navigator.push(context, CupertinoPageRoute(
+            await Navigator.push(context, CupertinoPageRoute(
               builder: (context) {
                 return const RegisterItemPage();
               },
             ));
+            // 新規投稿後にリフレッシュ
+            setState(() {
+              _fetchItemsFromStore();
+            });
           },
         ));
   }
