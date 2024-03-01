@@ -3,6 +3,8 @@ import 'package:furyu_hackathon_2024_hiyokogumi/pages/fuga.dart';
 import 'package:furyu_hackathon_2024_hiyokogumi/pages/hoge.dart';
 import 'package:furyu_hackathon_2024_hiyokogumi/pages/items_list_view_page.dart';
 
+/// 下タブを定義したベースとなるページ
+/// 下タブの切り替えによって表示するページを切り替える
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
   final String title;
@@ -13,6 +15,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
+  // 下タブで遷移するページのリスト
   final List<Widget> _pages = <Widget>[
     const Hoge(),
     const Fuga(),

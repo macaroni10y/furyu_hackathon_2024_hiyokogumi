@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:furyu_hackathon_2024_hiyokogumi/pages/hoge.dart';
+import 'package:furyu_hackathon_2024_hiyokogumi/pages/register_item_page.dart';
 
 /// 商品一覧画面
 /// 自分の商品一覧、いいね一覧、全ての商品一覧に使う想定
@@ -119,11 +120,27 @@ class _ItemsListViewPageState extends State<ItemsListViewPage> {
     ));
   }
 
+  /// 商品一覧ページのナビゲーションバーを生成する
+  CupertinoNavigationBar _buildCupertinoNavigationBar() {
+    return CupertinoNavigationBar(
+        middle: Text(widget.itemsListPageKind.title),
+        trailing: CupertinoButton(
+          child: const Icon(CupertinoIcons.add),
+          onPressed: () {
+            // 新規投稿画面に遷移
+            Navigator.push(context, CupertinoPageRoute(
+              builder: (context) {
+                return const RegisterItemPage();
+              },
+            ));
+          },
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar:
-          CupertinoNavigationBar(middle: Text(widget.itemsListPageKind.title)),
+      navigationBar: _buildCupertinoNavigationBar(),
       child: _buildBody(),
     );
   }
