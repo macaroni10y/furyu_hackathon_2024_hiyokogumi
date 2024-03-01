@@ -56,6 +56,11 @@ class _ItemsListViewPageState extends State<ItemsListViewPage> {
   /// TODO 商品1つをどのように表示するかのデザインが出来上がったら、実装する
   /// 画像をタップしたら商品詳細画面に遷移する
   Widget _buildOneItem(Item item) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    DateTime dateTime = item.createdAt.toDate();
+    String formattedDate = '${dateTime.year}年${dateTime.month}月${dateTime.day}日';
+
+
     return GestureDetector(
       onTap: () {
         // 商品詳細画面に遷移
@@ -68,9 +73,22 @@ class _ItemsListViewPageState extends State<ItemsListViewPage> {
           },
         ));
       },
-      child: Container(
-        padding: const EdgeInsets.all(1.0),
-        child: Image.network(item.imageUrl),
+      child: Column(
+        children: [
+          Container(
+            width: screenWidth/3,
+            height: screenWidth/3 - 40,
+            padding: const EdgeInsets.all(1.0),
+            child: Image.network(item.imageUrl,
+            fit: BoxFit.cover,),
+          ),
+          Container(
+            child: Text(item.title, style: TextStyle(fontSize: 10),),
+          ),
+          Container(
+            child: Text(formattedDate, style: TextStyle(fontSize: 10),),
+          ),
+        ],
       ),
     );
   }
