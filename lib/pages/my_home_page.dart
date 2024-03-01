@@ -28,7 +28,7 @@ class _MyHomePageState extends State<MyHomePage> {
             description: "kitajimaTest",
             imageUrl:
                 "https://firebasestorage.googleapis.com/v0/b/furyu-hackathon-hiyokogumi.appspot.com/o/images%2FUMY2qtaLsHXMoiFu2HUk7ispz3E3%2F2024-03-02%2004:06:26.689629.png?alt=media&token=9a440458-b87f-414f-a510-dd814e008623",
-            author: "UMY2qtaLsHXMoiFu2HUk7ispz3E3",
+            author: "TJnjz24VNng3VkS8CGUGYUkX9QD3",
             createdAt: Timestamp.now()),
         candidateId: "hogehoge"),
   ];

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,20 @@ class _CreateNewAccountState extends State<CreateNewAccount> {
   String userPassword = '';
   String userName = '';
   String infoText = '';
+
+  /// firebase認証後に、ニックネームを登録する
+  /// firebase authenticationにはメールアドレスとパスワード、UID以外の情報を持たせられないためfirestoreに入れる
+  Future<void> _registerNickName(
+      String userId, String userName, String userEmail) async {
+    await FirebaseFirestore.instance
+        .collection('user_info_list')
+        .doc(userId)
+        .set({
+      'name': userName,
+      'email': userEmail,
+      'createdAt': Timestamp.now(),
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +89,8 @@ class _CreateNewAccountState extends State<CreateNewAccount> {
                                   email: userEmail, password: userPassword);
 
                           final User user = result.user!;
+                          await _registerNickName(
+                              user.uid, userName, userEmail);
 
                           Navigator.push(
                             context,
