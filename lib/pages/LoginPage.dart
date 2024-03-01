@@ -19,6 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    FirebaseAuth.instance.signOut();
   }
 
   @override
@@ -104,6 +105,18 @@ class _LoginPageState extends State<LoginPage> {
                     height: 20,
                   ),
                   Text(infoText),
+                  CupertinoButton(
+                    child: Text("debug"),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              MyHomePage(title: 'Flutter Demo Home Page'),
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             )));
