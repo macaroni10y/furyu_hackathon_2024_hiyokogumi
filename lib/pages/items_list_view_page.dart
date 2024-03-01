@@ -39,6 +39,9 @@ class _ItemsListViewPageState extends State<ItemsListViewPage> {
               author: data["author"],
               createdAt: data["timestamp"]);
         }).toList();
+        if(widget.itemsListPageKind == ItemsListPageKind.myItems) {
+          _items = _items.where((item) => item.author == _userId).toList();
+        }
         setState(() {});
       },
       onError: (e) => print("Error completing: $e"),
