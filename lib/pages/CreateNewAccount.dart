@@ -59,7 +59,7 @@ class _CreateNewAccountState extends State<CreateNewAccount> {
                     placeholder: "Enter passwarod",
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: true,
-                    onSubmitted: (String txt) {
+                    onChanged: (String txt) {
                       userPassword = txt;
                     },
                   ),
@@ -70,7 +70,7 @@ class _CreateNewAccountState extends State<CreateNewAccount> {
                   CupertinoTextField(
                     placeholder: "Enter username",
                     keyboardType: TextInputType.name,
-                    onSubmitted: (String txt) {
+                    onChanged: (String txt) {
                       userName = txt;
                     },
                   ),

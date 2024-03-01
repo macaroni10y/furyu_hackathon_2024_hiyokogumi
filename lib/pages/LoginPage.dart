@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
                   CupertinoTextField(
                     placeholder: "Enter e-mail",
                     keyboardType: TextInputType.emailAddress,
-                    onSubmitted: (String txt) {
+                    onChanged: (String txt) {
                       loginEmail = txt;
                     },
                   ),
@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
                     placeholder: "Enter passwarod",
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: true,
-                    onSubmitted: (String txt) {
+                    onChanged: (String txt) {
                       loginPassword = txt;
                     },
                   ),
