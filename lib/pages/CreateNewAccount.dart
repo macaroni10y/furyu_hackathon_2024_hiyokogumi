@@ -13,10 +13,10 @@ class CreateNewAccount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text('新しいアカウントを作る'),
-      ),
-        child:  Padding(
+        navigationBar: CupertinoNavigationBar(
+          middle: Text('新しいアカウントを作る'),
+        ),
+        child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Center(
               child: Column(
@@ -26,7 +26,7 @@ class CreateNewAccount extends StatelessWidget {
                   CupertinoTextField(
                     placeholder: "Enter e-mail",
                     keyboardType: TextInputType.emailAddress,
-                    onSubmitted: (String txt){
+                    onSubmitted: (String txt) {
                       userEmail = txt;
                     },
                   ),
@@ -38,7 +38,7 @@ class CreateNewAccount extends StatelessWidget {
                     placeholder: "Enter passwarod",
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: true,
-                    onSubmitted: (String txt){
+                    onSubmitted: (String txt) {
                       userPassword = txt;
                     },
                   ),
@@ -49,7 +49,7 @@ class CreateNewAccount extends StatelessWidget {
                   CupertinoTextField(
                     placeholder: "Enter username",
                     keyboardType: TextInputType.name,
-                    onSubmitted: (String txt){
+                    onSubmitted: (String txt) {
                       userName = txt;
                     },
                   ),
@@ -59,15 +59,14 @@ class CreateNewAccount extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MyHomePage(title: 'Flutter Demo Home Page'),
+                          builder: (context) =>
+                              MyHomePage(title: 'Flutter Demo Home Page'),
                         ),
                       );
                     },
                   ),
                 ],
               ),
-            )
-        )
-    );
+            )));
   }
 }
