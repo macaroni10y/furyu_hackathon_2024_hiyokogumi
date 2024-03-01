@@ -1,6 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:furyu_hackathon_2024_hiyokogumi/pages/fuga.dart';
-import 'package:furyu_hackathon_2024_hiyokogumi/pages/hoge.dart';
 import 'package:furyu_hackathon_2024_hiyokogumi/pages/items_list_view_page.dart';
 
 /// 下タブを定義したベースとなるページ
@@ -17,8 +15,6 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
   // 下タブで遷移するページのリスト
   final List<Widget> _pages = <Widget>[
-    const Hoge(),
-    const Fuga(),
     const ItemsListViewPage(itemsListPageKind: ItemsListPageKind.allItems),
     const ItemsListViewPage(itemsListPageKind: ItemsListPageKind.myItems),
     const ItemsListViewPage(itemsListPageKind: ItemsListPageKind.likedItems),
@@ -34,14 +30,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.home),
-            label: 'Hoge',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.settings),
-            label: 'Fuga',
-          ),
           BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.home),
             label: '全てのアイデア',

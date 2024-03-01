@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,6 +21,12 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
   final _ideaNameController = TextEditingController();
   final _ideaDescriptionController = TextEditingController();
   String _uploadedImageUrl = '';
+  String _userId = "";
+  @override
+  void initState() {
+    super.initState();
+    _userId = FirebaseAuth.instance.currentUser?.uid ?? "";
+  }
 
   /// 端末のカメラから画像を選択する
   /// 画像を選択したら、Firebase Storageにアップロードする
@@ -30,8 +37,7 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
 
     if (selectedImage != null) {
       print('Selected image path: ${selectedImage.path}');
-      var imagePath =
-          'images/TODO_firebase_userId/${DateTime.now()}.png'; // TODO firebaseのユーザーIDを取得して、そのIDを使って画像を保存する
+      var imagePath = 'images/$_userId/${DateTime.now()}.png';
       print('try to upload imagePath: $imagePath');
       await FirebaseStorage.instance
           .ref(imagePath)
@@ -51,7 +57,7 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
     var itemId = Ulid().toString(); // アイテムに一意な値を生成
     await FirebaseFirestore.instance.collection('idea_items').add({
       'id': itemId,
-      'author': 'TODO_firebase_userId', // TODO: ここはログインユーザーのIDにする
+      'author': _userId,
       'title': _ideaNameController.text,
       'description': _ideaDescriptionController.text,
       'imageUrl': _uploadedImageUrl,
@@ -76,6 +82,10 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
               }
               if (_uploadedImageUrl.isEmpty) {
                 // 画像が選択されていない場合はエラーを表示
+                return;
+              }
+              if (_userId.isEmpty) {
+                Navigator.popUntil(context, (route) => route.isFirst);
                 return;
               }
               await _registerItemToDB();

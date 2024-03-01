@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:furyu_hackathon_2024_hiyokogumi/pages/hoge.dart';
+import 'package:furyu_hackathon_2024_hiyokogumi/pages/my_item_detail_page.dart';
 import 'package:furyu_hackathon_2024_hiyokogumi/pages/register_item_page.dart';
+import 'package:furyu_hackathon_2024_hiyokogumi/pages/taker-item-detail-page.dart';
 
 /// 商品一覧画面
 /// 自分の商品一覧、いいね一覧、全ての商品一覧に使う想定
@@ -17,91 +20,57 @@ class ItemsListViewPage extends StatefulWidget {
 
 class _ItemsListViewPageState extends State<ItemsListViewPage> {
   List<Item> _items = [];
+  String _userId = "";
 
   /// firestore商品一覧を取得する
-  /// 今は仮で固定のデータを返している
   /// TODO: 引数を取って、全て or 自分の商品 or いいねした商品を取得するようにする
-  void fetchItemsFromStore() {
-    _items = switch (widget.itemsListPageKind) {
-      ItemsListPageKind.myItems => [
-          Item(
-            id: '1',
-            name: 'item1',
-            description: 'description1',
-            imageUrl: 'https://placehold.jp/150x150.png',
-            authorId: 'author1',
-            createdAt: DateTime.now(),
-          ),
-        ],
-      ItemsListPageKind.allItems => [
-          Item(
-            id: '1',
-            name: 'item1',
-            description: 'description1',
-            imageUrl: 'https://placehold.jp/150x150.png',
-            authorId: 'author1',
-            createdAt: DateTime.now(),
-          ),
-          Item(
-            id: '1',
-            name: 'item1',
-            description: 'description1',
-            imageUrl: 'https://placehold.jp/150x150.png',
-            authorId: 'author1',
-            createdAt: DateTime.now(),
-          ),
-        ],
-      ItemsListPageKind.likedItems => [
-          Item(
-            id: '1',
-            name: 'item1',
-            description: 'description1',
-            imageUrl: 'https://placehold.jp/150x150.png',
-            authorId: 'author1',
-            createdAt: DateTime.now(),
-          ),
-          Item(
-            id: '1',
-            name: 'item1',
-            description: 'description1',
-            imageUrl: 'https://placehold.jp/150x150.png',
-            authorId: 'author1',
-            createdAt: DateTime.now(),
-          ),
-          Item(
-            id: '1',
-            name: 'item1',
-            description: 'description1',
-            imageUrl: 'https://placehold.jp/150x150.png',
-            authorId: 'author1',
-            createdAt: DateTime.now(),
-          ),
-        ],
-    };
+  Future<void> _fetchItemsFromStore() async {
+    FirebaseFirestore.instance.collection("idea_items").get().then(
+      (querySnapshot) {
+        print("Successfully completed");
+        _items = querySnapshot.docs.map((docSnapshot) {
+          var data = docSnapshot.data();
+          print(data);
+          return Item(
+              id: data["id"],
+              title: data["title"],
+              description: data["description"],
+              imageUrl: data["imageUrl"],
+              author: data["author"],
+              createdAt: data["timestamp"]);
+        }).toList();
+        setState(() {});
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
   }
 
   @override
   void initState() {
     super.initState();
-    fetchItemsFromStore();
+    _userId = FirebaseAuth.instance.currentUser?.uid ?? "";
+    _fetchItemsFromStore();
   }
 
   /// 商品画像のURLを受け取って、一覧の1つに表示するWidgetを返す。
   /// TODO 商品1つをどのように表示するかのデザインが出来上がったら、実装する
   /// 画像をタップしたら商品詳細画面に遷移する
-  Widget _buildOneItem(String imageUrl) {
+  Widget _buildOneItem(Item item) {
     return GestureDetector(
       onTap: () {
         // 商品詳細画面に遷移
         Navigator.push(context, CupertinoPageRoute(
           builder: (context) {
-            return Hoge(); // TODO: 商品詳細画面に遷移するようにする
+            // 自分の商品なら編集可能な詳細画面に遷移
+            return _userId == item.author
+                ? const MyItemDetailPage()
+                : const TakerItemDetailPage();
           },
         ));
       },
       child: Container(
         padding: const EdgeInsets.all(1.0),
-        child: Image.network(imageUrl),
+        child: Image.network(item.imageUrl),
       ),
     );
   }
@@ -114,7 +83,7 @@ class _ItemsListViewPageState extends State<ItemsListViewPage> {
         crossAxisCount: 3,
       ),
       itemBuilder: (BuildContext context, int index) {
-        return _buildOneItem(_items[index].imageUrl);
+        return _buildOneItem(_items[index]);
       },
       itemCount: _items.length,
     ));
@@ -150,18 +119,19 @@ class _ItemsListViewPageState extends State<ItemsListViewPage> {
 /// 属性は仮なので、必要があれば追加してください
 class Item {
   final String id;
-  final String name;
+  final String title;
   final String description;
   final String imageUrl;
-  final String authorId;
-  final DateTime createdAt;
+  // 投稿者のID
+  final String author;
+  final Timestamp createdAt;
 
   Item({
     required this.id,
-    required this.name,
+    required this.title,
     required this.description,
     required this.imageUrl,
-    required this.authorId,
+    required this.author,
     required this.createdAt,
   });
 }
