@@ -108,21 +108,22 @@ class _ItemsListViewPageState extends State<ItemsListViewPage> {
   /// 商品一覧ページのbodyを生成する
   Widget _buildBody() {
     return Center(
-        child: RefreshIndicator(
-        onRefresh: () async {
-      setState(() {
-        _fetchItemsFromStore();
-      });
-    },
-    child: GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-      ),
-      itemBuilder: (BuildContext context, int index) {
-        return _buildOneItem(_items[index]);
-      },
-      itemCount: _items.length,
-    )),);
+      child: RefreshIndicator(
+          onRefresh: () async {
+            setState(() {
+              _fetchItemsFromStore();
+            });
+          },
+          child: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+            ),
+            itemBuilder: (BuildContext context, int index) {
+              return _buildOneItem(_items[index]);
+            },
+            itemCount: _items.length,
+          )),
+    );
   }
 
   /// 商品一覧ページのナビゲーションバーを生成する
