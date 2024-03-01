@@ -32,7 +32,7 @@ class _ItemsListViewPageState extends State<ItemsListViewPage> {
           var data = docSnapshot.data();
           print(data);
           return Item(
-              id: data["id"],
+              id: docSnapshot.id,
               title: data["title"],
               description: data["description"],
               imageUrl: data["imageUrl"],
@@ -118,6 +118,7 @@ class _ItemsListViewPageState extends State<ItemsListViewPage> {
 /// 商品を表す
 /// 属性は仮なので、必要があれば追加してください
 class Item {
+  // itemのID (FirestoreのドキュメントID)
   final String id;
   final String title;
   final String description;
