@@ -33,20 +33,32 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Color.fromARGB(255, 232, 255, 214),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Image.asset('assets/images/mypage/mypage/search_on.png',
-                width: 30, height: 30, fit: BoxFit.fill),
+            icon: Image.asset(
+                _currentIndex == 0
+                    ? 'assets/images/mypage/mypage/search_on.png'
+                    : 'assets/images/mypage/mypage/search_off.png',
+                width: 30,
+                height: 30,
+                fit: BoxFit.fill),
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
-              'assets/images/mypage/mypage/home_on.png',
+              _currentIndex == 1
+                  ? 'assets/images/mypage/mypage/home_on.png'
+                  : 'assets/images/mypage/mypage/home_off.png',
               width: 30,
               height: 30,
               fit: BoxFit.fill,
             ),
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('assets/images/mypage/mypage/heart_on.png',
-                width: 30, height: 30, fit: BoxFit.fill),
+            icon: Image.asset(
+                _currentIndex == 2
+                    ? 'assets/images/mypage/mypage/heart_on.png'
+                    : 'assets/images/mypage/mypage/heart_off.png',
+                width: 30,
+                height: 30,
+                fit: BoxFit.fill),
           ),
         ],
         currentIndex: _currentIndex,
