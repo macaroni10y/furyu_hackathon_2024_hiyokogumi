@@ -29,18 +29,24 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
-        items: const <BottomNavigationBarItem>[
+        height: 80,
+        backgroundColor: Color.fromARGB(255, 232, 255, 214),
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.home),
-            label: '全てのアイデア',
+            icon: Image.asset('assets/images/mypage/mypage/search_on.png',
+                width: 30, height: 30, fit: BoxFit.fill),
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.person),
-            label: '自分のアイデア',
+            icon: Image.asset(
+              'assets/images/mypage/mypage/home_on.png',
+              width: 30,
+              height: 30,
+              fit: BoxFit.fill,
+            ),
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.heart),
-            label: 'いいね一覧',
+            icon: Image.asset('assets/images/mypage/mypage/heart_on.png',
+                width: 30, height: 30, fit: BoxFit.fill),
           ),
         ],
         currentIndex: _currentIndex,
