@@ -45,4 +45,6 @@ flutter:
     - assets/images/detail/
     - assets/images/detailfromother/
     - assets/images/detail/tags/
+    - assets/images/register/
+    - assets/images/register/tags/
     - assets/audio/

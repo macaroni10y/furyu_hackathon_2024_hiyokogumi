@@ -71,7 +71,7 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
           Text('RegisterItemPage'),
           _buildForm(),
           CupertinoButton(
-            child: const Text('投稿する'),
+            child: Image.asset('assets/register/'),
             onPressed: () async {
               // バリデーションチェック
               if (!_formKey.currentState!.validate()) {
@@ -161,9 +161,10 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: const Text('アイデア登録'),
+        backgroundColor: CupertinoColors.activeGreen,
+        middle: const Text('出品する'),
       ),
-      child: _buildBody(),
+      child: Container(child: _buildBody()),
     );
   }
 }
