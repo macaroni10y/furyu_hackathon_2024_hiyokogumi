@@ -18,6 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
     const ItemsListViewPage(itemsListPageKind: ItemsListPageKind.allItems),
     const ItemsListViewPage(itemsListPageKind: ItemsListPageKind.myItems),
     const ItemsListViewPage(itemsListPageKind: ItemsListPageKind.likedItems),
+    // const ChatPage(item: Item(author: 'A5OBEVprVAQbYeFqg8vxjAJku5V2', id: '0njGYByLeIDWLzQ0g2bJ', ), candidateId: ),
   ];
 
   @override

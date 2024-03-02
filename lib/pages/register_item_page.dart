@@ -68,10 +68,12 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('RegisterItemPage'),
           _buildForm(),
           CupertinoButton(
-            child: Image.asset('assets/register/'),
+            child: Image.asset(
+              'assets/images/register/登録する.png',
+              width: 180,
+            ),
             onPressed: () async {
               // バリデーションチェック
               if (!_formKey.currentState!.validate()) {
@@ -105,23 +107,26 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
             setState(() {});
           },
           child: Container(
-            width: 100,
-            height: 100,
             padding: const EdgeInsets.all(8.0),
             child: Image.network(
               _uploadedImageUrl.isNotEmpty
                   ? _uploadedImageUrl
                   : "https://placehold.jp/72/c2c2c2/ffffff/150x150.png?text=%EF%BC%8B",
-              width: 100,
-              height: 100,
+              width: 300,
+              height: 200,
+              fit: BoxFit.cover,
             ), // 画像が選択されていない場合はデフォルト画像を表示
           ),
         ),
-        Form(
-          key: _formKey,
-          autovalidateMode: AutovalidateMode.always,
-          child: CupertinoFormSection.insetGrouped(children: [
-            CupertinoTextFormFieldRow(
+        Column(children: [
+          Container(
+            margin:
+                const EdgeInsets.only(left: 36, right: 36, top: 16, bottom: 16),
+            decoration: BoxDecoration(
+              border: Border.all(color: CupertinoColors.white, width: 2),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: CupertinoTextFormFieldRow(
               controller: _ideaNameController,
               placeholder: 'アイデア名',
               validator: (value) {
@@ -134,12 +139,20 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
                 return null;
               },
             ),
-            CupertinoTextFormFieldRow(
+          ),
+          Container(
+            margin:
+                const EdgeInsets.only(left: 36, right: 36, top: 16, bottom: 16),
+            decoration: BoxDecoration(
+              border: Border.all(color: CupertinoColors.white, width: 2),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: CupertinoTextFormFieldRow(
               controller: _ideaDescriptionController,
               placeholder:
                   '概要（400文字以内）\n\n\n\n\n\n\n', // placeholderの上寄せが指定できないので8行分の高さを確保する力技
-              minLines: 8,
-              maxLines: 8,
+              minLines: 6,
+              maxLines: 6,
               maxLength: 400,
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -151,8 +164,8 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
                 return null;
               },
             ),
-          ]),
-        ),
+          ),
+        ]),
       ],
     );
   }
@@ -164,7 +177,14 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
         backgroundColor: CupertinoColors.activeGreen,
         middle: const Text('出品する'),
       ),
-      child: Container(child: _buildBody()),
+      child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/register/外枠.png'),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: _buildBody()),
     );
   }
 }
