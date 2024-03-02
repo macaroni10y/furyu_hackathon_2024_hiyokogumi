@@ -42,77 +42,101 @@ class _MyItemDetailPageState extends State<MyItemDetailPage> {
 
   /// 自分が出品した商品の詳細ページのbodyを生成する
   Widget _buildBody(Item item) {
-    return SingleChildScrollView(
-        child: Column(
-      children: [
-        Container(
-          width: 300,
-          height: 300,
-          margin: const EdgeInsets.fromLTRB(16, 120, 16, 24),
-          child: Image.network(item.imageUrl),
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/detail/外枠.png"),
+          fit: BoxFit.cover,
         ),
-        Container(
-          margin: EdgeInsets.fromLTRB(16, 0, 16, 24),
-          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text(
-              item.title,
-              style: TextStyle(
-                fontSize: 30,
+      ),
+      child: SafeArea(
+        child: SingleChildScrollView(
+            child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+              child: Image.network(
+                item.imageUrl,
+                fit: BoxFit.cover,
+                width: 300,
+                height: 200,
               ),
             ),
-            Icon(Icons.favorite, color: Colors.pink),
-            // いいねの数
-            Text(_favoriteCount.toString()),
-          ]),
-        ),
-        Text(
-          item.description,
-          style: TextStyle(
-            fontSize: 20,
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.fromLTRB(16, 32, 16, 32),
-          child: Row(
-            children: [
-              const Spacer(
-                flex: 1,
+            Container(
+              margin: EdgeInsets.fromLTRB(16, 0, 16, 24),
+              child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                Icon(Icons.favorite, color: Colors.pink),
+                // いいねの数
+                Text(_favoriteCount.toString()),
+                SizedBox(width: 36),
+              ]),
+            ),
+            Container(
+              child: Text(
+                item.title,
+                style: TextStyle(
+                  fontSize: 30,
+                ),
               ),
-              CupertinoButton(
-                onPressed: () async {
-                  await Navigator.of(context).push(
-                    CupertinoPageRoute(
-                        builder: (context) =>
-                            EditItemPage(editTarget: widget.item)),
-                  );
-                  setState(() {});
-                },
-                child: Text("編集する"),
+            ),
+            Container(
+              width: 300,
+              height: 100,
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.white, width: 2.5),
+                borderRadius: BorderRadius.circular(10),
               ),
-              const Spacer(
-                flex: 2,
+              child: Text(
+                item.description,
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 16,
+                ),
               ),
-              CupertinoButton(
-                onPressed: () => {
-                  _deleteItem(),
-                  Navigator.popUntil(context, (route) => route.isFirst),
-                },
-                child: Text("出品をやめる"),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 120),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CupertinoButton(
+                    onPressed: () async {
+                      await Navigator.of(context).push(
+                        CupertinoPageRoute(
+                            builder: (context) =>
+                                EditItemPage(editTarget: widget.item)),
+                      );
+                      setState(() {});
+                    },
+                    child:
+                        Image.asset("assets/images/detail/★編集.png", width: 160),
+                  ),
+                  CupertinoButton(
+                    onPressed: () => {
+                      _deleteItem(),
+                      Navigator.popUntil(context, (route) => route.isFirst),
+                    },
+                    child: Image.asset("assets/images/detail/★出品停止.png",
+                        width: 160),
+                  ),
+                ],
               ),
-              const Spacer(
-                flex: 1,
-              ),
-            ],
-          ),
-        ),
-      ],
-    ));
+            ),
+            SizedBox(
+              height: 40,
+            ),
+          ],
+        )),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(middle: Text("詳細画面")),
+      navigationBar: CupertinoNavigationBar(
+          middle: Text("出品情報"), backgroundColor: CupertinoColors.activeGreen),
       child: _buildBody(widget.item),
     );
   }

@@ -42,4 +42,7 @@ flutter:
   assets:
     - assets/images/mypage/mypage/
     - assets/images/createNewAccount/
+    - assets/images/detail/
+    - assets/images/detailfromother/
+    - assets/images/detail/tags/
     - assets/audio/
