@@ -27,23 +27,38 @@ class _ItemsListViewPageState extends State<ItemsListViewPage> {
   /// TODO: 引数を取って、全て or 自分の商品 or いいねした商品を取得するようにする
   Future<void> _fetchItemsFromStore() async {
     FirebaseFirestore.instance.collection("idea_items").get().then(
-      (querySnapshot) {
+      (querySnapshot) async {
         print("Successfully completed");
-        _items = querySnapshot.docs.map((docSnapshot) {
+        _items = await Future.wait(querySnapshot.docs.map((docSnapshot) async {
           var data = docSnapshot.data();
+          // いいね数を取得
+          var hoge = await docSnapshot.reference.collection("likes").get();
           print(data);
           return Item(
               id: docSnapshot.id,
               title: data["title"],
               description: data["description"],
               imageUrl: data["imageUrl"],
+              likedUserIdList: hoge.docs.map((e) => e.id).toList(),
               author: data["author"],
               createdAt: data["timestamp"]);
-        }).toList();
+        }));
+        if (widget.itemsListPageKind == ItemsListPageKind.allItems) {
+          setState(() {});
+          return;
+        }
         if (widget.itemsListPageKind == ItemsListPageKind.myItems) {
           _items = _items.where((item) => item.author == _userId).toList();
+          setState(() {});
+          return;
         }
-        setState(() {});
+        if (widget.itemsListPageKind == ItemsListPageKind.likedItems) {
+          _items = _items
+              .where((item) => item.likedUserIdList.contains(_userId))
+              .toList();
+          setState(() {});
+          return;
+        }
       },
       onError: (e) => print("Error completing: $e"),
     );
@@ -168,6 +183,7 @@ class Item {
   final String title;
   final String description;
   final String imageUrl;
+  final List<String> likedUserIdList;
   // 投稿者のID
   final String author;
   final Timestamp createdAt;
@@ -177,6 +193,7 @@ class Item {
     required this.title,
     required this.description,
     required this.imageUrl,
+    required this.likedUserIdList,
     required this.author,
     required this.createdAt,
   });

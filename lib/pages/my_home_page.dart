@@ -1,6 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:furyu_hackathon_2024_hiyokogumi/pages/chat_page.dart';
 import 'package:furyu_hackathon_2024_hiyokogumi/pages/items_list_view_page.dart';
 
 /// 下タブを定義したベースとなるページ
@@ -20,17 +18,6 @@ class _MyHomePageState extends State<MyHomePage> {
     const ItemsListViewPage(itemsListPageKind: ItemsListPageKind.allItems),
     const ItemsListViewPage(itemsListPageKind: ItemsListPageKind.myItems),
     const ItemsListViewPage(itemsListPageKind: ItemsListPageKind.likedItems),
-    // 固定でチャットページを追加 TODO 動的にIDを指定してチャットページを追加する
-    ChatPage(
-        item: Item(
-            id: "YqtxNyFDofieaj7HnyiI",
-            title: "kitajimaTest",
-            description: "kitajimaTest",
-            imageUrl:
-                "https://firebasestorage.googleapis.com/v0/b/furyu-hackathon-hiyokogumi.appspot.com/o/images%2FUMY2qtaLsHXMoiFu2HUk7ispz3E3%2F2024-03-02%2004:06:26.689629.png?alt=media&token=9a440458-b87f-414f-a510-dd814e008623",
-            author: "TJnjz24VNng3VkS8CGUGYUkX9QD3",
-            createdAt: Timestamp.now()),
-        candidateId: "hogehoge"),
   ];
 
   @override
@@ -54,10 +41,6 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.heart),
             label: 'いいね一覧',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.chat_bubble),
-            label: 'チャット',
           ),
         ],
         currentIndex: _currentIndex,
