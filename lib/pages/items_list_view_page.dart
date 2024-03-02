@@ -24,7 +24,7 @@ class _ItemsListViewPageState extends State<ItemsListViewPage> {
   String _userId = "";
 
   /// firestore商品一覧を取得する
-  /// TODO: 引数を取って、全て or 自分の商品 or いいねした商品を取得するようにする
+  /// 自分の商品一覧、いいね一覧、全ての商品一覧のどれかによって取得する商品一覧が異なる
   Future<void> _fetchItemsFromStore() async {
     FirebaseFirestore.instance.collection("idea_items").get().then(
       (querySnapshot) async {
@@ -75,11 +75,8 @@ class _ItemsListViewPageState extends State<ItemsListViewPage> {
   /// TODO 商品1つをどのように表示するかのデザインが出来上がったら、実装する
   /// 画像をタップしたら商品詳細画面に遷移する
   Widget _buildOneItem(Item item) {
+    var textGreen = Color.fromARGB(255, 21, 147, 0);
     double screenWidth = MediaQuery.of(context).size.width;
-    DateTime dateTime = item.createdAt.toDate();
-    String formattedDate =
-        '${dateTime.year}年${dateTime.month}月${dateTime.day}日';
-
     return GestureDetector(
       onTap: () async {
         // 商品詳細画面に遷移
@@ -96,52 +93,86 @@ class _ItemsListViewPageState extends State<ItemsListViewPage> {
           _fetchItemsFromStore();
         });
       },
-      child: Column(
-        children: [
-          Container(
-            width: screenWidth / 3,
-            height: screenWidth / 3 - 40,
-            padding: const EdgeInsets.all(1.0),
-            child: Image.network(
-              item.imageUrl,
-              fit: BoxFit.cover,
+      child: Container(
+        margin: const EdgeInsets.all(4.0),
+        decoration: BoxDecoration(
+          border: Border.all(color: CupertinoColors.white, width: 1.5),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(1.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              margin: const EdgeInsets.all(1.0),
+              child: Image.network(
+                item.imageUrl,
+                fit: BoxFit.cover,
+                width: screenWidth / 2.5,
+                height: screenWidth / 3.6,
+              ),
             ),
-          ),
-          Container(
-            child: Text(
-              item.title,
-              style: TextStyle(fontSize: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item.title,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(fontSize: 18, color: textGreen),
+                ),
+                Row(
+                  children: [
+                    const Icon(
+                      CupertinoIcons.heart_fill,
+                      color: Color.fromARGB(255, 21, 147, 0),
+                      size: 12,
+                    ),
+                    Text(
+                      textAlign: TextAlign.left,
+                      '${item.likedUserIdList.length}',
+                      style: TextStyle(fontSize: 14, color: textGreen),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ),
-          Container(
-            child: Text(
-              formattedDate,
-              style: TextStyle(fontSize: 10),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
   /// 商品一覧ページのbodyを生成する
   Widget _buildBody() {
-    return Center(
-      child: RefreshIndicator(
-          onRefresh: () async {
-            setState(() {
-              _fetchItemsFromStore();
-            });
-          },
-          child: GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-            ),
-            itemBuilder: (BuildContext context, int index) {
-              return _buildOneItem(_items[index]);
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/mypage/mypage/bk.png"),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Center(
+        child: RefreshIndicator(
+            onRefresh: () async {
+              setState(() {
+                _fetchItemsFromStore();
+              });
             },
-            itemCount: _items.length,
-          )),
+            child: Container(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                ),
+                itemBuilder: (BuildContext context, int index) {
+                  return _buildOneItem(_items[index]);
+                },
+                itemCount: _items.length,
+              ),
+            )),
+      ),
     );
   }
 
@@ -149,6 +180,7 @@ class _ItemsListViewPageState extends State<ItemsListViewPage> {
   CupertinoNavigationBar _buildCupertinoNavigationBar() {
     return CupertinoNavigationBar(
         middle: Text(widget.itemsListPageKind.title),
+        backgroundColor: CupertinoColors.activeGreen,
         trailing: CupertinoButton(
           child: const Icon(CupertinoIcons.add),
           onPressed: () async {
