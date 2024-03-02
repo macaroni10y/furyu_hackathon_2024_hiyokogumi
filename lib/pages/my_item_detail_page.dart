@@ -14,12 +14,30 @@ class MyItemDetailPage extends StatefulWidget {
 }
 
 class _MyItemDetailPageState extends State<MyItemDetailPage> {
+  int _favoriteCount = 0;
+  List<Candidate> _candidateList = [];
+  void _fetchLikeCount() async {
+    var likes = await FirebaseFirestore.instance
+        .collection("idea_items")
+        .doc(widget.item.id)
+        .collection('likes')
+        .get();
+    _favoriteCount = likes.size;
+    setState(() {});
+  }
+
   // 出品を取り消す
   void _deleteItem() {
     FirebaseFirestore.instance
         .collection('idea_items')
         .doc(widget.item.id)
         .delete();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchLikeCount();
   }
 
   /// 自分が出品した商品の詳細ページのbodyを生成する
@@ -44,7 +62,7 @@ class _MyItemDetailPageState extends State<MyItemDetailPage> {
             ),
             Icon(Icons.favorite, color: Colors.pink),
             // いいねの数
-            Text('100'),
+            Text(_favoriteCount.toString()),
           ]),
         ),
         Text(
@@ -98,4 +116,10 @@ class _MyItemDetailPageState extends State<MyItemDetailPage> {
       child: _buildBody(widget.item),
     );
   }
+}
+
+class Candidate {
+  final String id;
+  final String name;
+  Candidate({required this.id, required this.name});
 }
