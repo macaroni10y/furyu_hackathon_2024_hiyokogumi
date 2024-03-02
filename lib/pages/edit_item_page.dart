@@ -77,10 +77,12 @@ class _EditItemPageState extends State<EditItemPage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('EditItemPage'),
           _buildForm(),
           CupertinoButton(
-            child: const Text('投稿する'),
+            child: Image.asset(
+              'assets/images/register/登録する.png',
+              width: 180,
+            ),
             onPressed: () async {
               if (_uploadedImageUrl.isEmpty) {
                 // 画像が選択されていない場合はエラーを表示
@@ -110,15 +112,14 @@ class _EditItemPageState extends State<EditItemPage> {
             setState(() {});
           },
           child: Container(
-            width: 100,
-            height: 100,
             padding: const EdgeInsets.all(8.0),
             child: Image.network(
               _uploadedImageUrl.isNotEmpty
                   ? _uploadedImageUrl
                   : "https://placehold.jp/72/c2c2c2/ffffff/150x150.png?text=%EF%BC%8B",
-              width: 100,
-              height: 100,
+              width: 300,
+              height: 200,
+              fit: BoxFit.cover,
             ), // 画像が選択されていない場合はデフォルト画像を表示
           ),
         ),
