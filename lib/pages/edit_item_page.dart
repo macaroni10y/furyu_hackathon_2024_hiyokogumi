@@ -170,6 +170,7 @@ class _EditItemPageState extends State<EditItemPage> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
+        backgroundColor: CupertinoColors.activeGreen,
         middle: const Text('アイデア登録'),
       ),
       child: _buildBody(),
