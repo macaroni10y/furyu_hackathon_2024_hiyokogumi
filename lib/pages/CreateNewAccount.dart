@@ -33,91 +33,165 @@ class _CreateNewAccountState extends State<CreateNewAccount> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
-          middle: Text('新しいアカウントを作る'),
+    return Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/createNewAccount/bk.png"),
+          ),
         ),
-        child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text('e-mailアドレス'),
-                  CupertinoTextField(
-                    placeholder: "Enter e-mail",
-                    keyboardType: TextInputType.emailAddress,
-                    onChanged: (String txt) {
-                      userEmail = txt;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const Text('パスワード'),
-                  CupertinoTextField(
-                    placeholder: "Enter passwarod",
-                    keyboardType: TextInputType.visiblePassword,
-                    obscureText: true,
-                    onChanged: (String txt) {
-                      userPassword = txt;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const Text('ユーザ名'),
-                  CupertinoTextField(
-                    placeholder: "Enter username",
-                    keyboardType: TextInputType.name,
-                    onChanged: (String txt) {
-                      userName = txt;
-                    },
-                  ),
-                  CupertinoButton(
-                    child: Text('アカウント登録'),
-                    onPressed: () async {
-                      if (userPassword.length < 6) {
-                        setState(() {
-                          infoText = 'パスワードは6文字以上で設定してください';
-                        });
-                      } else if (!userPassword.isEmpty && !userEmail.isEmpty) {
-                        try {
-                          final FirebaseAuth auth = FirebaseAuth.instance;
-                          final UserCredential result =
-                              await auth.createUserWithEmailAndPassword(
-                                  email: userEmail, password: userPassword);
+        child: CupertinoPageScaffold(
+            backgroundColor: Colors.transparent,
+            navigationBar: CupertinoNavigationBar(
+              backgroundColor: Colors.lightGreen,
+              middle: Text('新しいアカウントを作る'),
+            ),
+            child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Center(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        Container(
+                          width: 250,
+                          height: 30,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                            image: AssetImage(
+                                "assets/images/createNewAccount/ロゴ.png"),
+                          )),
+                        ),
+                        Container(
+                          width: 140,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                            image: AssetImage(
+                                "assets/images/createNewAccount/キャッチコピー.png"),
+                          )),
+                        ),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        Container(
+                          alignment: Alignment.topLeft,
+                          width: 140,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                            image: AssetImage(
+                                "assets/images/createNewAccount/mail.png"),
+                          )),
+                        ),
+                        CupertinoTextField(
+                          //placeholder: "Enter e-mail",
+                          keyboardType: TextInputType.emailAddress,
+                          onChanged: (String txt) {
+                            userEmail = txt;
+                          },
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          alignment: Alignment.topLeft,
+                          width: 110,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                            image: AssetImage(
+                                "assets/images/createNewAccount/password.png"),
+                          )),
+                        ),
+                        CupertinoTextField(
+                          //placeholder: "Enter passwarod",
+                          keyboardType: TextInputType.visiblePassword,
+                          obscureText: true,
+                          onChanged: (String txt) {
+                            userPassword = txt;
+                          },
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          alignment: Alignment.bottomLeft,
+                          width: 140,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                            image: AssetImage(
+                                "assets/images/createNewAccount/username.png"),
+                          )),
+                        ),
+                        CupertinoTextField(
+                          //placeholder: "Enter username",
+                          keyboardType: TextInputType.name,
+                          onChanged: (String txt) {
+                            userName = txt;
+                          },
+                        ),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        CupertinoButton(
+                          child: Container(
+                            width: 150,
+                            height: 100,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                              image: AssetImage(
+                                  "assets/images/createNewAccount/btn.png"),
+                            )),
+                          ),
+                          onPressed: () async {
+                            if (userPassword.length < 6) {
+                              setState(() {
+                                infoText = 'パスワードは6文字以上で設定してください';
+                              });
+                            } else if (!userPassword.isEmpty &&
+                                !userEmail.isEmpty) {
+                              try {
+                                final FirebaseAuth auth = FirebaseAuth.instance;
+                                final UserCredential result =
+                                    await auth.createUserWithEmailAndPassword(
+                                        email: userEmail,
+                                        password: userPassword);
 
-                          final User user = result.user!;
-                          await _registerNickName(
-                              user.uid, userName, userEmail);
+                                final User user = result.user!;
+                                await _registerNickName(
+                                    user.uid, userName, userEmail);
 
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  MyHomePage(title: 'Flutter Demo Home Page'),
-                            ),
-                          );
-                        } catch (e) {
-                          setState(() {
-                            print(e);
-                            infoText = 'ユーザー登録時にエラーが発生しました';
-                          });
-                        }
-                      } else {
-                        setState(() {
-                          infoText = 'e-mailアドレスとパスワードの両方を入力してください';
-                        });
-                      }
-                    },
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MyHomePage(
+                                        title: 'Flutter Demo Home Page'),
+                                  ),
+                                );
+                              } catch (e) {
+                                setState(() {
+                                  print(e);
+                                  infoText = 'ユーザー登録時にエラーが発生しました';
+                                });
+                              }
+                            } else {
+                              setState(() {
+                                infoText = 'e-mailアドレスとパスワードの両方を入力してください';
+                              });
+                            }
+                          },
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(infoText),
+                      ],
+                    ),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Text(infoText),
-                ],
-              ),
-            )));
+                ))));
   }
 }
