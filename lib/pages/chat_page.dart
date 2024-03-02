@@ -155,10 +155,17 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: Text(
-            '${widget.item.title} の取引画面 出品者: $_authorNickName ほしい側: $_candidateNickName'),
+        backgroundColor: CupertinoColors.activeGreen,
+        middle: Text('${widget.item.title} の取引画面'),
       ),
-      child: _buildBody(),
+      child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/detail/背景画像.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: _buildBody()),
     );
   }
 }

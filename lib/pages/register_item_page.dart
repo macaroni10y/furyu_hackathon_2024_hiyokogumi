@@ -75,10 +75,6 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
               width: 180,
             ),
             onPressed: () async {
-              // バリデーションチェック
-              if (!_formKey.currentState!.validate()) {
-                return;
-              }
               if (_uploadedImageUrl.isEmpty) {
                 // 画像が選択されていない場合はエラーを表示
                 return;

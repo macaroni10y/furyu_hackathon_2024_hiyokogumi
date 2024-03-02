@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
       child: CupertinoPageScaffold(
           backgroundColor: Colors.transparent,
           navigationBar: CupertinoNavigationBar(
-            backgroundColor: Colors.lightGreen,
+            backgroundColor: CupertinoColors.activeGreen,
             middle: Text('ログイン'),
           ),
           child: Padding(

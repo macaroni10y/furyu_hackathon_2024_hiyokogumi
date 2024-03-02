@@ -42,7 +42,7 @@ class _CreateNewAccountState extends State<CreateNewAccount> {
         child: CupertinoPageScaffold(
             backgroundColor: Colors.transparent,
             navigationBar: CupertinoNavigationBar(
-              backgroundColor: Colors.lightGreen,
+              backgroundColor: CupertinoColors.activeGreen,
               middle: Text('新しいアカウントを作る'),
             ),
             child: Padding(

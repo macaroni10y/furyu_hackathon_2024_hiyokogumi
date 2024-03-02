@@ -152,8 +152,8 @@ class _TakerItemDetailPageState extends State<TakerItemDetailPage> {
                                     )))
                       },
                   child: Image.asset(
-                    "assets/images/detailfromother/コメント(3件)を表示….png",
-                    width: 150,
+                    "assets/images/detailfromother/chat.png",
+                    width: 250,
                   )),
             ),
             SizedBox(
@@ -168,7 +168,8 @@ class _TakerItemDetailPageState extends State<TakerItemDetailPage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(middle: Text("詳細画面")),
+      navigationBar: CupertinoNavigationBar(
+          backgroundColor: CupertinoColors.activeGreen, middle: Text("詳細画面")),
       child: _buildBody(widget.item),
     );
   }
