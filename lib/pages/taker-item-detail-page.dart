@@ -96,7 +96,6 @@ class _TakerItemDetailPageState extends State<TakerItemDetailPage> {
               IconButton(
                 onPressed: () {
                   setState(() {
-                    // いいね取り消し無効
                     _like();
                     favorite = true;
                   });
