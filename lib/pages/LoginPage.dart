@@ -33,6 +33,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
       child: Scaffold(
           backgroundColor: Colors.transparent,
+          resizeToAvoidBottomInset: false,
           body: Container(
             margin: const EdgeInsets.all(12.0),
             decoration: BoxDecoration(
