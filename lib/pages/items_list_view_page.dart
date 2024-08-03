@@ -120,7 +120,7 @@ class _ItemsListViewPageState extends State<ItemsListViewPage> {
                 Text(
                   item.title,
                   textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 18, color: textGreen),
+                  style: TextStyle(fontSize: 12, color: textGreen),
                 ),
                 Row(
                   children: [
@@ -149,29 +149,116 @@ class _ItemsListViewPageState extends State<ItemsListViewPage> {
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("assets/images/mypage/mypage/bk.png"),
+          image: AssetImage("assets/images/createNewAccount/bk.png"),
           fit: BoxFit.cover,
         ),
       ),
       child: Center(
-        child: RefreshIndicator(
-            onRefresh: () async {
-              setState(() {
-                _fetchItemsFromStore();
-              });
-            },
-            child: Container(
-              padding: const EdgeInsets.only(left: 20, right: 20),
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                ),
-                itemBuilder: (BuildContext context, int index) {
-                  return _buildOneItem(_items[index]);
-                },
-                itemCount: _items.length,
+        child: Container(
+          margin: const EdgeInsets.only(top: 12, left: 12, right: 12),
+          decoration: BoxDecoration(
+            image: const DecorationImage(
+              image: AssetImage("assets/images/createNewAccount/bk.png"),
+              fit: BoxFit.cover,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.3), // 影の色と透明度
+                spreadRadius: 1,
+                blurRadius: 5,
+                offset: const Offset(0, 3),
               ),
-            )),
+            ],
+            border: const Border(
+              top: BorderSide(
+                  color: Color.fromRGBO(240, 255, 222, 1.0), width: 3.0),
+              left: BorderSide(
+                  color: Color.fromRGBO(240, 255, 222, 1.0), width: 3.0),
+              right: BorderSide(
+                  color: Color.fromRGBO(240, 255, 222, 1.0), width: 3.0),
+            ),
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(33),
+              topRight: Radius.circular(33),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromRGBO(240, 255, 222, 1.0),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
+                ),
+                height: 60,
+                child: const Center(
+                  child: Image(
+                      width: 120,
+                      height: 100,
+                      image:
+                          AssetImage("assets/images/createNewAccount/ロゴ.png")),
+                ),
+              ),
+              Expanded(
+                child: RefreshIndicator(
+                    onRefresh: () async {
+                      setState(() {
+                        _fetchItemsFromStore();
+                      });
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 10, right: 10),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            CupertinoButton(
+                              padding: const EdgeInsets.all(4),
+                              child: const Image(
+                                  width: 150,
+                                  height: 50,
+                                  image: AssetImage(
+                                      "assets/images/mypage/mypage/mypage_btn_on.png")),
+                              onPressed: () async {
+                                // 新規投稿画面に遷移
+                                await Navigator.push(context,
+                                    CupertinoPageRoute(
+                                  builder: (context) {
+                                    return const RegisterItemPage();
+                                  },
+                                ));
+                                // 新規投稿後にリフレッシュ
+                                setState(() {
+                                  _fetchItemsFromStore();
+                                });
+                              },
+                            ),
+                            Flexible(
+                              child: GridView.builder(
+                                padding: const EdgeInsets.all(4),
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                ),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return _buildOneItem(_items[index]);
+                                },
+                                itemCount: _items.length,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -200,9 +287,9 @@ class _ItemsListViewPageState extends State<ItemsListViewPage> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: _buildCupertinoNavigationBar(),
-      child: _buildBody(),
+    return Scaffold(
+      // navigationBar: _buildCupertinoNavigationBar(),
+      body: _buildBody(),
     );
   }
 }
